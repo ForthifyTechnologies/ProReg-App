@@ -3,6 +3,7 @@ import generateRandomString from "../../utils/strings/generateRandomString";
 
 // Get all timetables
 export async function getTimetables(): Promise<Timetable[]> {
+  // AsyncStorage.removeItem("@timetables");
   return JSON.parse((await AsyncStorage.getItem("@timetables")) || "[]");
 }
 

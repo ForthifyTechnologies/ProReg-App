@@ -113,7 +113,7 @@ export default function Timetable({
               <Text
                 style={{
                   // @ts-ignore
-                  color: colors[event.schedule.color][300] + "cc",
+                  color: colors[event.schedule.color || "lime"][300] + "cc",
                   width: "100%",
                   textAlign: "left",
                   fontSize: 10,
@@ -124,7 +124,7 @@ export default function Timetable({
               <Text
                 style={{
                   // @ts-ignore
-                  color: colors[event.schedule.color][300],
+                  color: colors[event.schedule.color || "lime"][300],
                   textAlign: "center",
                   fontSize: 12,
                   fontWeight: "bold",

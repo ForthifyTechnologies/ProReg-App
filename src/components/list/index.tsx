@@ -1,5 +1,12 @@
 import React, { createContext, useContext, useState } from "react";
-import { Alert, Pressable, Text, TextInput, View } from "react-native";
+import {
+  ActivityIndicator,
+  Alert,
+  Pressable,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import colors from "tailwindcss/colors";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -130,11 +137,15 @@ List.Button = function ({
   title,
   value,
   color = "white",
+  loading = false,
+  disabled = false,
 }: {
   onPress: () => void;
   title: string;
   value?: string;
   color?: string;
+  loading?: boolean;
+  disabled?: boolean;
 }) {
   const lighter = useContext(LighterContext);
 
@@ -144,6 +155,7 @@ List.Button = function ({
         backgroundColor: pressed ? colors.zinc[lighter ? 700 : 800] : undefined,
       })}
       onPress={onPress}
+      disabled={disabled}
     >
       <List.Base title={title} color={color}>
         <View
@@ -163,7 +175,15 @@ List.Button = function ({
               {value}
             </Text>
           )}
-          <Ionicons name="chevron-forward" size={18} color={colors.zinc[600]} />
+          {loading ? (
+            <ActivityIndicator size={18} />
+          ) : (
+            <Ionicons
+              name="chevron-forward"
+              size={18}
+              color={colors.zinc[600]}
+            />
+          )}
         </View>
       </List.Base>
     </Pressable>
@@ -176,12 +196,16 @@ List.TextInput = function ({
   onChangeText,
   title,
   keyboardType = "default",
+  secureTextEntry = false,
+  disabled = false,
 }: {
   value: string;
   prompt?: boolean;
   onChangeText: (text: string) => void;
   title: string;
   keyboardType?: "default" | "numeric";
+  secureTextEntry?: boolean;
+  disabled?: boolean;
 }) {
   if (prompt) {
     return (
@@ -199,6 +223,7 @@ List.TextInput = function ({
         }
         title={title}
         value={value}
+        disabled={disabled}
       />
     );
   }
@@ -220,6 +245,8 @@ List.TextInput = function ({
       placeholderTextColor={colors.zinc[600]}
       keyboardAppearance="dark"
       keyboardType={keyboardType}
+      secureTextEntry={secureTextEntry}
+      editable={!disabled}
     />
   );
 };

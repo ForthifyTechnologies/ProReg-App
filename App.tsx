@@ -9,6 +9,7 @@ import NewTimetableScreen from "./src/screens/timetable/new";
 import TimetableContextProvider from "./src/contexts/timetable";
 import EditScheduleScreen from "./src/screens/schedule/edit";
 import EditTimetableScreen from "./src/screens/timetable/edit";
+import ImportFromImaluumScreen from "./src/screens/timetable/import/imaluum";
 
 const Stack = createNativeStackNavigator();
 
@@ -55,6 +56,15 @@ export default function App() {
           <Stack.Screen
             name="New Timetable"
             component={NewTimetableScreen}
+            options={{
+              presentation: "modal",
+              headerBlurEffect: "systemUltraThinMaterialDark",
+              headerLargeStyle: { backgroundColor: colors.zinc[900] },
+            }}
+          />
+          <Stack.Screen
+            name="Import From i-Ma'luum"
+            component={ImportFromImaluumScreen}
             options={{
               presentation: "modal",
               headerBlurEffect: "systemUltraThinMaterialDark",

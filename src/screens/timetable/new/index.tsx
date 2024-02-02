@@ -77,7 +77,7 @@ export default function NewTimetableScreen({
         {/* FIXME: Highlight on press not working expectedly on lighter backgrounds */}
         <List.Button
           title="Import From i-Ma'luum"
-          onPress={() => console.log("Pressed 1")}
+          onPress={() => navigation.navigate("Import From i-Ma'luum")}
         />
       </List>
     </ScrollView>
