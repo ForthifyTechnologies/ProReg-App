@@ -48,23 +48,30 @@ export default function ImportFromImaluumScreen({
   async function importTimetable() {
     setLoading(true);
 
-    const response = await axios.post(
-      "https://proreg.forthify.tech/api/timetables/import/imaluum",
-      {
-        username,
-        password,
+    try {
+      const response = await axios.post(
+        "https://proreg.forthify.tech/api/timetables/import/imaluum",
+        {
+          username,
+          password,
+        }
+      );
+
+      const timetable: Timetable = response.data.timetable;
+      const sessions = response.data.sessions;
+
+      setTempTimetable(timetable);
+      setSessions(sessions);
+    } catch (error: any) {
+      if (error.response.status === 401) {
+        Alert.alert(
+          "Invalid Credentials",
+          "Please check your username and password."
+        );
       }
-    );
-
-    // TODO: Show error if credentials are invalid
-
-    const timetable: Timetable = response.data.timetable;
-    const sessions = response.data.sessions;
-
-    setTempTimetable(timetable);
-    setSessions(sessions);
-
-    setLoading(false);
+    } finally {
+      setLoading(false);
+    }
   }
 
   async function importSession(session: any) {
