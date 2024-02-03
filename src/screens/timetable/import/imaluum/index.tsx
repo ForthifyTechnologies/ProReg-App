@@ -14,6 +14,8 @@ export default function ImportFromImaluumScreen({
   navigation: any;
   route: any;
 }) {
+  const existingTitles: string[] = route.params.existingTitles;
+
   // Credentials
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -104,12 +106,25 @@ export default function ImportFromImaluumScreen({
     for (const timetable of timetables) {
       let tweakedTimetable = { ...timetable };
 
+      const colors = [
+        "slate",
+        "red",
+        "orange",
+        "yellow",
+        "lime",
+        "emerald",
+        "sky",
+        "indigo",
+        "violet",
+        "pink",
+      ];
+
       // Set color and abbreviation for every schedule in timetable
       tweakedTimetable.schedules = tweakedTimetable.schedules.map(
         (schedule) => {
           return {
             ...schedule,
-            color: "slate",
+            color: colors[Math.floor(Math.random() * colors.length)],
             abbreviation: schedule.title
               .split(" ")
               .map((x) => x[0])
@@ -118,8 +133,17 @@ export default function ImportFromImaluumScreen({
         }
       );
 
-      // TODO: Rename title if it already exists
+      // Rename title if it already exists
+      // Append (2), (3), etc. to the title
+      let index = 2;
+      let title = timetable.title;
+      while (existingTitles.includes(title)) {
+        title = `${timetable.title} (${index})`;
+        index++;
+      }
+      tweakedTimetable.title = title;
 
+      // Add timetable to database
       await addTimetable(tweakedTimetable);
     }
 
