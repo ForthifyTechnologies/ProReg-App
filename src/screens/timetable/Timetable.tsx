@@ -3,6 +3,7 @@ import { Text, TouchableOpacity, View } from "react-native";
 import colors from "tailwindcss/colors";
 import useTimetable from "../../hooks/useTimetable";
 import * as Haptics from "expo-haptics";
+import { BlurView } from "expo-blur";
 
 export default function Timetable({
   onSchedulePressed,
@@ -96,15 +97,11 @@ export default function Timetable({
                 // 3 is the margin
                 // 32 is the height of the day text
                 top: (event.start - startTime) * 84 + 3 + 32,
+                width: "100%",
                 // 6 is the margin
                 height: (event.end - event.start) * 84 - 6,
-                width: "100%",
                 borderRadius: 8,
-                // @ts-ignore
-                backgroundColor: colors[event.schedule.color][300] + "33",
-                padding: 4,
-                justifyContent: "space-between",
-                alignItems: "center",
+                overflow: "hidden",
               }}
               onPress={() => {
                 // TODO: Show info only instead of edit form
@@ -115,39 +112,53 @@ export default function Timetable({
                 onSchedulePressed(event.schedule);
               }}
             >
-              <Text
+              <BlurView
+                intensity={16}
+                tint="systemUltraThinMaterial"
                 style={{
-                  // @ts-ignore
-                  color: colors[event.schedule.color || "lime"][300] + "cc",
                   width: "100%",
-                  textAlign: "left",
-                  fontSize: 10,
-                }}
-              >
-                {moment(event.weekTime.start, "HH:mm").format("h:mm A")}
-              </Text>
-              <Text
-                style={{
+                  height: "100%",
                   // @ts-ignore
-                  color: colors[event.schedule.color || "lime"][300],
-                  textAlign: "center",
-                  fontSize: 12,
-                  fontWeight: "bold",
+                  backgroundColor: colors[event.schedule.color][300] + "80",
+                  padding: 4,
+                  justifyContent: "space-between",
+                  alignItems: "center",
                 }}
               >
-                {event.schedule.abbreviation || event.schedule.title}
-              </Text>
-              <Text
-                style={{
-                  // @ts-ignore
-                  color: colors[event.schedule.color][300] + "cc",
-                  width: "100%",
-                  textAlign: "right",
-                  fontSize: 10,
-                }}
-              >
-                {moment(event.weekTime.end, "HH:mm").format("h:mm A")}
-              </Text>
+                <Text
+                  style={{
+                    // @ts-ignore
+                    color: "white",
+                    width: "100%",
+                    textAlign: "left",
+                    fontSize: 10,
+                  }}
+                >
+                  {moment(event.weekTime.start, "HH:mm").format("h:mm A")}
+                </Text>
+                <Text
+                  style={{
+                    // @ts-ignore
+                    color: "white",
+                    textAlign: "center",
+                    fontSize: 12,
+                    fontWeight: "bold",
+                  }}
+                >
+                  {event.schedule.abbreviation || event.schedule.title}
+                </Text>
+                <Text
+                  style={{
+                    // @ts-ignore
+                    color: "white",
+                    width: "100%",
+                    textAlign: "right",
+                    fontSize: 10,
+                  }}
+                >
+                  {moment(event.weekTime.end, "HH:mm").format("h:mm A")}
+                </Text>
+              </BlurView>
             </TouchableOpacity>
           ))}
         </View>

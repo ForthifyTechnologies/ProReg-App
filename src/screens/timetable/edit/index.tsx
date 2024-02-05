@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import colors from "tailwindcss/colors";
 import HeaderButton from "../../../components/header/button";
 import useTimetable from "../../../hooks/useTimetable";
+import * as ImagePicker from "expo-image-picker";
 
 export default function EditTimetableScreen({
   navigation,
@@ -25,6 +26,9 @@ export default function EditTimetableScreen({
   const [year, setYear] = useState("");
   const [semester, setSemester] = useState<number | null>(null);
 
+  // Customization
+  const [image, setImage] = useState<string | null>(null);
+
   useEffect(() => {
     if (!timetable) return;
 
@@ -35,6 +39,9 @@ export default function EditTimetableScreen({
     setUniversity(timetable?.university || "");
     setYear(timetable?.year || "");
     setSemester(timetable?.semester || null);
+
+    // Customization
+    setImage(timetable?.image || null);
   }, [timetable]);
 
   useEffect(() => {
@@ -52,7 +59,7 @@ export default function EditTimetableScreen({
         />
       ),
     });
-  }, [navigation, title, university, year, semester]);
+  }, [navigation, title, university, year, semester, image]);
 
   function validate() {
     if (!title || title === "") return false;
@@ -70,8 +77,20 @@ export default function EditTimetableScreen({
       university,
       year,
       semester: semester || undefined,
+      image: image || undefined,
     });
     navigation.goBack();
+  }
+
+  async function pickImage() {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    });
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
   }
 
   return (
@@ -116,7 +135,7 @@ export default function EditTimetableScreen({
         <List.Button
           title="Change Background"
           onPress={() => {
-            //
+            pickImage();
           }}
         />
       </List>
