@@ -11,7 +11,8 @@ export default function Timetable({
 }) {
   const { timetable } = useTimetable();
 
-  let startTime = 24;
+  let startTime = 24,
+    endTime = 0;
   let events: any = [[], [], [], [], [], [], []];
 
   for (const [index, schedule] of (timetable?.schedules || []).entries()) {
@@ -27,6 +28,8 @@ export default function Timetable({
 
       // If start time is smaller than previous start time, update start time
       if (start < startTime) startTime = start;
+      // Vice versa for end time
+      if (end > endTime) endTime = end;
 
       // Push
       events[weekTime.day].push({
@@ -51,6 +54,8 @@ export default function Timetable({
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "flex-start",
+        // Calculate height based on the start and end times
+        height: (endTime - startTime) * 84,
       }}
     >
       {/* Map each column resembling the days of the week */}
