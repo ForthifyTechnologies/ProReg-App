@@ -26,6 +26,7 @@ export default function HomeScreen({ navigation }: { navigation: any }) {
     <>
       <ScrollView
         style={styles.container}
+        contentContainerStyle={{ paddingBottom: 128 }}
         contentInsetAdjustmentBehavior="automatic"
       >
         <List title="My Timetables">

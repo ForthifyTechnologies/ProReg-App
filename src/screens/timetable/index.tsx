@@ -33,7 +33,9 @@ export default function TimetableScreen({ navigation }: { navigation: any }) {
     <>
       <ScrollView
         style={styles.container}
+        contentContainerStyle={{ paddingBottom: 128 }}
         contentInsetAdjustmentBehavior="automatic"
+        showsVerticalScrollIndicator={false}
       >
         <Timetable
           onSchedulePressed={(schedule) => {
