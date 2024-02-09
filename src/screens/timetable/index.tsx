@@ -68,7 +68,7 @@ export default function TimetableScreen({ navigation }: { navigation: any }) {
               alignItems: "center",
             })}
             onPress={() => {
-              //
+              navigation.navigate("IIUM Catalog");
             }}
           >
             <Ionicons name="search" size={20} color={colors.zinc[400]} />
