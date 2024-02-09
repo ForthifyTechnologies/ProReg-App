@@ -10,6 +10,7 @@ import TimetableContextProvider from "./src/contexts/timetable";
 import EditScheduleScreen from "./src/screens/schedule/edit";
 import EditTimetableScreen from "./src/screens/timetable/edit";
 import ImportFromImaluumScreen from "./src/screens/timetable/import/imaluum";
+import IIUMCatalogScreen from "@/screens/timetable/iiumcatalog";
 
 const Stack = createNativeStackNavigator();
 
@@ -84,6 +85,15 @@ export default function App() {
           <Stack.Screen
             name="Add Schedule"
             component={AddScheduleScreen}
+            options={{
+              presentation: "modal",
+              headerBlurEffect: "systemUltraThinMaterialDark",
+              headerLargeStyle: { backgroundColor: colors.zinc[900] },
+            }}
+          />
+          <Stack.Screen
+            name="IIUM Catalog"
+            component={IIUMCatalogScreen}
             options={{
               presentation: "modal",
               headerBlurEffect: "systemUltraThinMaterialDark",

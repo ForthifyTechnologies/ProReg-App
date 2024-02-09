@@ -6,6 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
+    "scheme": "tech.forthify.ProReg",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
