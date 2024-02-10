@@ -1,4 +1,11 @@
-import { ScrollView, SafeAreaView, TextInput, View, Text } from "react-native";
+import {
+  ScrollView,
+  SafeAreaView,
+  TextInput,
+  View,
+  Text,
+  Pressable,
+} from "react-native";
 import { styles } from "@/styles";
 import { useEffect, useState, useCallback } from "react";
 import colors from "tailwindcss/colors";
@@ -19,7 +26,6 @@ export default function IIUMCatalogScreen({ navigation }: { navigation: any }) {
       headerLeft: () => (
         <HeaderButton title="Cancel" onPress={navigation.goBack} />
       ),
-      headerRight: () => <HeaderButton title="Add" bold />,
     });
   }, [navigation]);
 
@@ -106,7 +112,7 @@ export default function IIUMCatalogScreen({ navigation }: { navigation: any }) {
         ) : (
           Object.entries(timetable).map(
             // @ts-ignore
-            ([courseCode, { courseName, subjects }], index) => (
+            ([courseCode, { courseName, creditHours, subjects }], index) => (
               <View
                 key={index}
                 style={{
@@ -118,13 +124,32 @@ export default function IIUMCatalogScreen({ navigation }: { navigation: any }) {
                     color: "white",
                     fontSize: 18,
                     fontWeight: "bold",
+                  }}
+                >
+                  {courseName}
+                </Text>
+                <Text
+                  style={{
+                    color: "white",
+                    fontSize: 18,
+                    fontWeight: "bold",
                     marginBottom: 8,
                   }}
                 >
-                  {courseName} ({courseCode})
+                  ({courseCode})
                 </Text>
                 {subjects.map((subject: Schedule, subjectIndex: number) => (
-                  <View
+                  <Pressable
+                    onPress={() => {
+                      navigation.navigate("View Catalog", {
+                        schedule: {
+                          ...subject,
+                          title: courseName,
+                          code: courseCode,
+                          creditHours,
+                        },
+                      });
+                    }}
                     key={subjectIndex}
                     style={{
                       backgroundColor: colors.zinc[800],
@@ -148,9 +173,11 @@ export default function IIUMCatalogScreen({ navigation }: { navigation: any }) {
                         fontWeight: "bold",
                       }}
                     >
-                      {subject.lecturer}
+                      {subject.lecturer && subject.lecturer.length > 0
+                        ? subject.lecturer.join(", ")
+                        : subject.lecturer}
                     </Text>
-                  </View>
+                  </Pressable>
                 ))}
               </View>
             )
