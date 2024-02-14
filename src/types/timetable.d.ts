@@ -16,7 +16,7 @@ type Schedule = {
   code?: string;
   section?: number;
   creditHours?: number;
-  lecturer?: string;
+  lecturer?: string[];
   venue?: string;
   color?: string;
 };
