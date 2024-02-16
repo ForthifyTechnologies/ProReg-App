@@ -53,6 +53,8 @@ export default function ImportFromImaluumScreen({
     const username = imaluumSession.username;
     const password = imaluumSession.password;
 
+    console.log("username", username, "password", password);
+
     try {
       console.log(`${url}/api/timetables/import/imaluum`);
       const response = await axios.post(
@@ -62,6 +64,8 @@ export default function ImportFromImaluumScreen({
           password,
         }
       );
+
+      console.log("response", response.data.timetable);
 
       const timetable: Timetable = response.data.timetable;
       const sessions = response.data.sessions;
@@ -85,7 +89,6 @@ export default function ImportFromImaluumScreen({
 
     const username = imaluumSession.username;
     const password = imaluumSession.password;
-
     // If session refers to tempTimetable, just copy
 
     if (
