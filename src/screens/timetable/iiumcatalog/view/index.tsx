@@ -1,13 +1,19 @@
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
-import { styles } from "../../../styles";
-import List from "../../../components/list";
+import { Alert, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { styles } from "@/styles";
+import List from "@/components/list";
 import { useEffect, useState } from "react";
 import moment from "moment";
 import colors from "tailwindcss/colors";
-import HeaderButton from "../../../components/header/button";
-import useTimetable from "../../../hooks/useTimetable";
+import HeaderButton from "@/components/header/button";
+import useTimetable from "@/hooks/useTimetable";
 
-export default function AddScheduleScreen({ navigation }: { navigation: any }) {
+export default function ViewCatalogScreen({
+  navigation,
+  route,
+}: {
+  navigation: any;
+  route: any;
+}) {
   // Title
   const [title, setTitle] = useState("");
   const [abbreviation, setAbbreviation] = useState("");
@@ -29,6 +35,23 @@ export default function AddScheduleScreen({ navigation }: { navigation: any }) {
 
   // Context
   const { timetable, addSchedule: addScheduleContext } = useTimetable();
+
+  useEffect(() => {
+    // console.log(route.params.schedule);
+    // Set default values
+    const schedule: Schedule = route.params.schedule;
+    setTitle(schedule.title);
+    setAbbreviation(schedule.code || schedule.abbreviation || "");
+    setDays(schedule.weekTimes.map((x) => x.day));
+    setStart(schedule.weekTimes[0].start);
+    setEnd(schedule.weekTimes[0].end);
+    setColor(schedule.color || null);
+    setCourseCode(schedule.code || "");
+    setSection(schedule.section || null);
+    setCreditHours(schedule.creditHours || null);
+    setLecturer(schedule.lecturer?.[0] || "");
+    setVenue(schedule.venue || "");
+  }, []);
 
   useEffect(() => {
     // Setup header buttons
@@ -109,7 +132,7 @@ export default function AddScheduleScreen({ navigation }: { navigation: any }) {
     };
 
     addScheduleContext(newSchedule);
-    navigation.goBack();
+    navigation.navigate("Timetable");
   }
 
   return (

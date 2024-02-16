@@ -126,17 +126,34 @@ export default function Timetable({
               >
                 {moment(event.weekTime.start, "HH:mm").format("h:mm A")}
               </Text>
-              <Text
-                style={{
-                  // @ts-ignore
-                  color: colors[event.schedule.color || "lime"][300],
-                  textAlign: "center",
-                  fontSize: 12,
-                  fontWeight: "bold",
-                }}
-              >
-                {event.schedule.abbreviation || event.schedule.title}
-              </Text>
+              <View>
+                <Text
+                  style={{
+                    // @ts-ignore
+                    color: colors[event.schedule.color || "lime"][300],
+                    textAlign: "center",
+                    fontSize: 12,
+                    fontWeight: "bold",
+                  }}
+                >
+                  {event.schedule.abbreviation.split(" ")[0] ||
+                    event.schedule.title}
+                  {/* {event.schedule.abbreviation || event.schedule.} */}
+                </Text>
+                {event.schedule.abbreviation.split(" ").length > 1 && (
+                  <Text
+                    style={{
+                      // @ts-ignore
+                      color: colors[event.schedule.color || "lime"][300],
+                      textAlign: "center",
+                      fontSize: 12,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {event.schedule.abbreviation.split(" ")[1]}
+                  </Text>
+                )}
+              </View>
               <Text
                 style={{
                   // @ts-ignore
