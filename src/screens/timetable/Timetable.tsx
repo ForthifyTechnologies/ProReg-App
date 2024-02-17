@@ -67,25 +67,38 @@ export default function Timetable({
             position: "relative",
             flex: 1,
             marginLeft: index !== 0 ? 6 : 0,
-            backgroundColor: "red",
           }}
         >
           {/* Display days of the week */}
-          <Text
+          <View
             style={{
               position: "absolute",
               top: 0,
-              left: 0,
-              fontSize: 12,
               width: "100%",
-              textAlign: "center",
-              color: colors.zinc[400],
+              overflow: "hidden",
+              borderRadius: 8,
             }}
           >
-            {moment()
-              .day(events.length === 5 ? index + 1 : index)
-              .format(events.length === 5 ? "ddd" : "dd")}
-          </Text>
+            <BlurView
+              style={{
+                paddingVertical: 2,
+                paddingHorizontal: 8,
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 12,
+                  width: "100%",
+                  textAlign: "center",
+                  color: "white",
+                }}
+              >
+                {moment()
+                  .day(events.length === 5 ? index + 1 : index)
+                  .format(events.length === 5 ? "ddd" : "dd")}
+              </Text>
+            </BlurView>
+          </View>
 
           {/* Map each event in the column */}
           {dayEvents.map((event: any, index: number) => (
@@ -114,7 +127,6 @@ export default function Timetable({
             >
               <BlurView
                 intensity={16}
-                tint="systemUltraThinMaterial"
                 style={{
                   width: "100%",
                   height: "100%",
