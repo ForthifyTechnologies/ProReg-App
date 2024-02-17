@@ -1,4 +1,3 @@
-import { BlurView } from "expo-blur";
 import { Text, TouchableOpacity, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import colors from "tailwindcss/colors";
@@ -9,9 +8,7 @@ export default function BottomBar({
   children?: React.ReactNode;
 }) {
   return (
-    <BlurView
-      intensity={32}
-      tint="systemUltraThinMaterialDark"
+    <View
       style={{
         position: "absolute",
         bottom: 0,
@@ -23,7 +20,7 @@ export default function BottomBar({
       }}
     >
       {children}
-    </BlurView>
+    </View>
   );
 }
 

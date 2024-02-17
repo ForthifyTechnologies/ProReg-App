@@ -14,6 +14,7 @@ import colors from "tailwindcss/colors";
 import useTimetable from "../../hooks/useTimetable";
 import { useEffect } from "react";
 import HeaderButton from "../../components/header/button";
+import { BlurView } from "expo-blur";
 
 export default function TimetableScreen({ navigation }: { navigation: any }) {
   const { timetable } = useTimetable();
@@ -73,22 +74,30 @@ export default function TimetableScreen({ navigation }: { navigation: any }) {
           <Pressable
             style={({ pressed }) => ({
               flex: 1,
-              backgroundColor: pressed ? colors.zinc[800] : colors.zinc[900],
-              paddingVertical: 8,
-              paddingHorizontal: 16,
               borderRadius: 12,
+              overflow: "hidden",
+              opacity: pressed ? 0.5 : 1,
               marginRight: 12,
-              flexDirection: "row",
-              alignItems: "center",
             })}
             onPress={() => {
               navigation.navigate("IIUM Catalog");
             }}
           >
-            <Ionicons name="search" size={20} color={colors.zinc[400]} />
-            <Text style={{ color: colors.zinc[400], marginLeft: 8 }}>
-              Search IIUM's catalog
-            </Text>
+            <BlurView
+              intensity={64}
+              tint="dark"
+              style={{
+                paddingVertical: 8,
+                paddingHorizontal: 16,
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <Ionicons name="search" size={20} color={colors.zinc[400]} />
+              <Text style={{ color: colors.zinc[400], marginLeft: 8 }}>
+                Search IIUM's catalog
+              </Text>
+            </BlurView>
           </Pressable>
           <TouchableOpacity onPress={() => navigation.navigate("Add Schedule")}>
             <Ionicons name="add-circle" size={42} color={colors.lime[500]} />
