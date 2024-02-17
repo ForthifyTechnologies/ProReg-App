@@ -49,11 +49,13 @@ export default function useTimetable() {
     university,
     semester,
     year,
+    image,
   }: {
     title?: string;
     university?: string;
     semester?: number;
     year?: string;
+    image?: string;
   }) {
     if (!timetable) return;
 
@@ -62,6 +64,7 @@ export default function useTimetable() {
     if (university) newTimetable.university = university;
     if (semester) newTimetable.semester = semester;
     if (year) newTimetable.year = year;
+    if (image) newTimetable.image = image;
     setTimetable(newTimetable);
     updateTimetable(newTimetable);
   }

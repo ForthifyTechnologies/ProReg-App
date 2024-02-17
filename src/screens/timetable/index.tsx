@@ -1,4 +1,5 @@
 import {
+  ImageBackground,
   Pressable,
   ScrollView,
   Text,
@@ -26,13 +27,26 @@ export default function TimetableScreen({ navigation }: { navigation: any }) {
           onPress={() => navigation.navigate("Edit Timetable")}
         />
       ),
+      headerLargeStyle: {
+        backgroundColor: timetable?.image ? "transparent" : "black",
+      },
     });
   }, [timetable]);
 
   return (
-    <>
+    <ImageBackground
+      source={{ uri: timetable?.image }}
+      resizeMode="cover"
+      style={{
+        flex: 1,
+        justifyContent: "center",
+      }}
+    >
       <ScrollView
-        style={styles.container}
+        style={[
+          styles.container,
+          { backgroundColor: timetable?.image ? "#00000080" : "black" },
+        ]}
         contentContainerStyle={{ paddingBottom: 128 }}
         contentInsetAdjustmentBehavior="automatic"
         showsVerticalScrollIndicator={false}
@@ -81,6 +95,6 @@ export default function TimetableScreen({ navigation }: { navigation: any }) {
           </TouchableOpacity>
         </View>
       </BottomBar>
-    </>
+    </ImageBackground>
   );
 }

@@ -3,6 +3,7 @@ import { Text, TouchableOpacity, View } from "react-native";
 import colors from "tailwindcss/colors";
 import useTimetable from "../../hooks/useTimetable";
 import * as Haptics from "expo-haptics";
+import { BlurView } from "expo-blur";
 
 export default function Timetable({
   onSchedulePressed,
@@ -66,25 +67,38 @@ export default function Timetable({
             position: "relative",
             flex: 1,
             marginLeft: index !== 0 ? 6 : 0,
-            backgroundColor: "red",
           }}
         >
           {/* Display days of the week */}
-          <Text
+          <View
             style={{
               position: "absolute",
               top: 0,
-              left: 0,
-              fontSize: 12,
               width: "100%",
-              textAlign: "center",
-              color: colors.zinc[400],
+              overflow: "hidden",
+              borderRadius: 8,
             }}
           >
-            {moment()
-              .day(events.length === 5 ? index + 1 : index)
-              .format(events.length === 5 ? "ddd" : "dd")}
-          </Text>
+            <BlurView
+              style={{
+                paddingVertical: 2,
+                paddingHorizontal: 8,
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 12,
+                  width: "100%",
+                  textAlign: "center",
+                  color: "white",
+                }}
+              >
+                {moment()
+                  .day(events.length === 5 ? index + 1 : index)
+                  .format(events.length === 5 ? "ddd" : "dd")}
+              </Text>
+            </BlurView>
+          </View>
 
           {/* Map each event in the column */}
           {dayEvents.map((event: any, index: number) => (
@@ -96,15 +110,11 @@ export default function Timetable({
                 // 3 is the margin
                 // 32 is the height of the day text
                 top: (event.start - startTime) * 84 + 3 + 32,
+                width: "100%",
                 // 6 is the margin
                 height: (event.end - event.start) * 84 - 6,
-                width: "100%",
                 borderRadius: 8,
-                // @ts-ignore
-                backgroundColor: colors[event.schedule.color][300] + "33",
-                padding: 4,
-                justifyContent: "space-between",
-                alignItems: "center",
+                overflow: "hidden",
               }}
               onPress={() => {
                 // TODO: Show info only instead of edit form
@@ -115,56 +125,52 @@ export default function Timetable({
                 onSchedulePressed(event.schedule);
               }}
             >
-              <Text
+              <BlurView
+                intensity={16}
                 style={{
-                  // @ts-ignore
-                  color: colors[event.schedule.color || "lime"][300] + "cc",
                   width: "100%",
-                  textAlign: "left",
-                  fontSize: 10,
+                  height: "100%",
+                  // @ts-ignore
+                  backgroundColor: colors[event.schedule.color][300] + "80",
+                  padding: 4,
+                  justifyContent: "space-between",
+                  alignItems: "center",
                 }}
               >
-                {moment(event.weekTime.start, "HH:mm").format("h:mm A")}
-              </Text>
-              <View>
                 <Text
                   style={{
                     // @ts-ignore
-                    color: colors[event.schedule.color || "lime"][300],
+                    color: "white",
+                    width: "100%",
+                    textAlign: "left",
+                    fontSize: 10,
+                  }}
+                >
+                  {moment(event.weekTime.start, "HH:mm").format("h:mm A")}
+                </Text>
+                <Text
+                  style={{
+                    // @ts-ignore
+                    color: "white",
                     textAlign: "center",
                     fontSize: 12,
                     fontWeight: "bold",
                   }}
                 >
-                  {event.schedule.abbreviation.split(" ")[0] ||
-                    event.schedule.title}
-                  {/* {event.schedule.abbreviation || event.schedule.} */}
+                  {event.schedule.abbreviation || event.schedule.title}
                 </Text>
-                {event.schedule.abbreviation.split(" ").length > 1 && (
-                  <Text
-                    style={{
-                      // @ts-ignore
-                      color: colors[event.schedule.color || "lime"][300],
-                      textAlign: "center",
-                      fontSize: 12,
-                      fontWeight: "bold",
-                    }}
-                  >
-                    {event.schedule.abbreviation.split(" ")[1]}
-                  </Text>
-                )}
-              </View>
-              <Text
-                style={{
-                  // @ts-ignore
-                  color: colors[event.schedule.color][300] + "cc",
-                  width: "100%",
-                  textAlign: "right",
-                  fontSize: 10,
-                }}
-              >
-                {moment(event.weekTime.end, "HH:mm").format("h:mm A")}
-              </Text>
+                <Text
+                  style={{
+                    // @ts-ignore
+                    color: "white",
+                    width: "100%",
+                    textAlign: "right",
+                    fontSize: 10,
+                  }}
+                >
+                  {moment(event.weekTime.end, "HH:mm").format("h:mm A")}
+                </Text>
+              </BlurView>
             </TouchableOpacity>
           ))}
         </View>

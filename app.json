@@ -20,6 +20,9 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "plugins": [
+      "expo-image-picker"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "tech.forthify.ProReg",
