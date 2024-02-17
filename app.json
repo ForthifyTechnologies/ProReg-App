@@ -2,14 +2,20 @@
   "expo": {
     "name": "ProReg",
     "slug": "ProReg",
-    "version": "1.0.0",
+    "version": "1.0.4",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
+    "scheme": "tech.forthify.ProReg",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#ffffff",
+      "dark": {
+        "image": "./assets/splash.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#000000"
+      }
     },
     "assetBundlePatterns": [
       "**/*"
@@ -20,7 +26,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "tech.forthify.ProReg",
-      "buildNumber": "3"
+      "buildNumber": "5"
     },
     "android": {
       "adaptiveIcon": {
@@ -35,6 +41,7 @@
       "eas": {
         "projectId": "dd247811-1d87-493d-9208-025db5424e36"
       }
-    }
+    },
+    "owner": "forthifytechnologies"
   }
 }

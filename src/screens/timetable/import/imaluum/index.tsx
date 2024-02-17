@@ -1,11 +1,14 @@
-import { Alert, ScrollView, Text } from "react-native";
-import { useEffect, useState } from "react";
-import colors from "tailwindcss/colors";
-import HeaderButton from "../../../../components/header/button";
-import { styles } from "../../../../styles";
-import List from "../../../../components/list";
+import HeaderButton from "@/components/header/button";
+import List from "@/components/list";
+import { useImaluumSessionStore } from "@/contexts/imaluumSessionStore";
+import { addTimetable } from "@/database/controllers/timetable";
+import { styles } from "@/styles";
 import axios from "axios";
-import { addTimetable } from "../../../../database/controllers/timetable";
+import { useEffect, useState } from "react";
+import { Alert, ScrollView, Text } from "react-native";
+import colors from "tailwindcss/colors";
+
+const url = "https://proreg.forthify.tech";
 
 export default function ImportFromImaluumScreen({
   navigation,
@@ -16,9 +19,7 @@ export default function ImportFromImaluumScreen({
 }) {
   const existingTitles: string[] = route.params.existingTitles;
 
-  // Credentials
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const { imaluumSession, setImaluumSession } = useImaluumSessionStore();
 
   // Data
   const [tempTimetable, setTempTimetable] = useState<Timetable | null>(null);
@@ -47,15 +48,24 @@ export default function ImportFromImaluumScreen({
 
   async function importTimetable() {
     setLoading(true);
+    setTempTimetable(null);
+
+    const username = imaluumSession.username;
+    const password = imaluumSession.password;
+
+    console.log("username", username, "password", password);
 
     try {
+      console.log(`${url}/api/timetables/import/imaluum`);
       const response = await axios.post(
-        "https://proreg.forthify.tech/api/timetables/import/imaluum",
+        `${url}/api/timetables/import/imaluum`,
         {
           username,
           password,
         }
       );
+
+      console.log("response", response.data.timetable);
 
       const timetable: Timetable = response.data.timetable;
       const sessions = response.data.sessions;
@@ -77,6 +87,8 @@ export default function ImportFromImaluumScreen({
   async function importSession(session: any) {
     if (!tempTimetable) return;
 
+    const username = imaluumSession.username;
+    const password = imaluumSession.password;
     // If session refers to tempTimetable, just copy
 
     if (
@@ -91,15 +103,12 @@ export default function ImportFromImaluumScreen({
 
     setLoadingSession(session);
 
-    const response = await axios.post(
-      "https://proreg.forthify.tech/api/timetables/import/imaluum",
-      {
-        username,
-        password,
-        year: session.year,
-        semester: session.semester,
-      }
-    );
+    const response = await axios.post(`${url}/api/timetables/import/imaluum`, {
+      username,
+      password,
+      year: session.year,
+      semester: session.semester,
+    });
 
     const timetable: Timetable = response.data.timetable;
     setTimetables([...timetables, timetable]);
@@ -111,7 +120,7 @@ export default function ImportFromImaluumScreen({
     if (timetables.length === 0) return;
 
     for (const timetable of timetables) {
-      let tweakedTimetable = { ...timetable };
+      const tweakedTimetable = { ...timetable };
 
       const colors = [
         "slate",
@@ -175,23 +184,37 @@ export default function ImportFromImaluumScreen({
       >
         <List.TextInput
           title="Username or Matric No."
-          value={username}
-          onChangeText={setUsername}
-          disabled={loading || !!tempTimetable}
+          value={imaluumSession.username}
+          onChangeText={(e) =>
+            setImaluumSession({
+              username: e,
+              password: imaluumSession.password,
+            })
+          }
+          disabled={loading}
         />
         <List.TextInput
           title="Password"
-          value={password}
-          onChangeText={setPassword}
+          value={imaluumSession.password}
+          onChangeText={(e) =>
+            setImaluumSession({
+              username: imaluumSession.username,
+              password: e,
+            })
+          }
           secureTextEntry
-          disabled={loading || !!tempTimetable}
+          disabled={loading}
         />
         <List.Button
           title="Authenticate"
           onPress={importTimetable}
           color={colors.lime[500]}
           loading={loading}
-          disabled={!username || !password || loading || !!tempTimetable}
+          disabled={
+            imaluumSession.username === "" ||
+            imaluumSession.password === "" ||
+            loading
+          }
         />
       </List>
 
