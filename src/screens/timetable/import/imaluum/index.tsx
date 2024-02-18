@@ -8,14 +8,6 @@ import { useEffect, useState } from "react";
 import { Alert, ScrollView, Text } from "react-native";
 import colors from "tailwindcss/colors";
 
-// development purpose
-// const url =
-// 	process.env.NODE_ENV === "development"
-// 		? // ganti dengan ip address laptop
-// 		  "http://172.20.10.2:3000"
-// 		: "https://proreg.forthify.tech";
-
-// production purpose
 const url = "https://proreg.forthify.tech";
 
 export default function ImportFromImaluumScreen({

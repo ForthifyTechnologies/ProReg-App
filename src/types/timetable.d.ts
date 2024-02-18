@@ -7,6 +7,7 @@ type Timetable = {
   year?: string;
   semester?: number;
   schedules: Schedule[];
+  image?: string;
 };
 
 type Schedule = {
